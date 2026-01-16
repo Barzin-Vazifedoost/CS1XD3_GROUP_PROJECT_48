@@ -1,0 +1,176 @@
+/* styles.css
+   Basic blue theme for our team site.
+   Add this on every page:
+   <link rel="stylesheet" href="styles.css">
+*/
+
+:root {
+  --bg: #f3f7ff;
+  --surface: #ffffff;
+  --border: #d9e3ff;
+  --text: #1f2a44;
+  --muted: #5c6b8a;
+
+  --blue: #1e63ff;
+  --blue-soft: #e9f0ff;
+  --blue-dark: #164bd1;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.55;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Center + limit page width */
+.wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Links */
+a {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Header + nav */
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 0;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+header p {
+  margin: 6px 0 0;
+  color: var(--muted);
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+nav a {
+  display: inline-block;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+nav a:hover {
+  background: var(--blue-soft);
+  text-decoration: none;
+}
+
+nav a[aria-current="page"] {
+  background: var(--blue-soft);
+  border: 1px solid var(--border);
+  font-weight: bold;
+}
+
+/* Main layout */
+main {
+  padding: 18px 0 28px;
+}
+
+section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+h2 {
+  margin: 0 0 10px;
+  font-size: 20px;
+}
+
+p { margin: 0 0 10px; }
+p:last-child { margin-bottom: 0; }
+
+/* About page: team layout */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 700px) {
+  .team-grid { grid-template-columns: 1fr; }
+}
+
+.member {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  background: #fbfdff;
+}
+
+.member img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.member h3 {
+  margin: 8px 0 4px;
+  font-size: 16px;
+}
+
+.role {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* Optional buttons */
+.btn {
+  display: inline-block;
+  background: var(--blue);
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--blue);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: var(--blue-dark);
+  border-color: var(--blue-dark);
+  text-decoration: none;
+}
+
+.btn.secondary {
+  background: var(--blue-soft);
+  color: var(--blue);
+  border: 1px solid var(--border);
+}
+
+.btn.secondary:hover {
+  background: #dbe7ff;
+  text-decoration: none;
+}
