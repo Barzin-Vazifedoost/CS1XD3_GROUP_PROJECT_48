@@ -174,3 +174,40 @@ p:last-child { margin-bottom: 0; }
   background: #dbe7ff;
   text-decoration: none;
 }
+
+/* Project page: simple responsive image grid for placeholders */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.project-card {
+  background: #fbfdff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.project-card .caption {
+  padding: 10px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+@media (max-width: 800px) {
+  .project-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .project-grid { grid-template-columns: 1fr; }
+}
