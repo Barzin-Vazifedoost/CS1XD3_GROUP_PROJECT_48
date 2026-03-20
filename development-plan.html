@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GROUP 48 - Development Plan</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="splash.css">
+</head>
+
+<body>
+    <div id="splash-overlay" class="splash-overlay" role="dialog" aria-modal="true" aria-label="Welcome">
+        <div class="splash-content">
+            <h1>Welcome to Team 48</h1>
+            <p>Press Go to enter the site.</p>
+            <button id="splash-go" class="splash-btn">Go</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="wrap">
+            <h1>Development Plan</h1>
+            <p>ExtremityVault — Team 48</p>
+            <nav aria-label="Site navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="project.html">Project</a></li>
+                    <li><a href="showcase.html">Showcase</a></li>
+                    <li><a href="development-plan.html" aria-current="page">Dev Plan</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="wrap">
+
+            <!-- 1. Names -->
+            <section>
+                <h2>1. Names</h2>
+                <p><strong>Team:</strong> Team 48</p>
+                <p><strong>Members:</strong> Barzin Vazifedoost, Erin Sobers, Anika Agnihotri, Ammar Khan</p>
+                <p><strong>Client:</strong> TBD</p>
+                <p><strong>App:</strong> ExtremityVault</p>
+            </section>
+
+            <!-- 2. Purpose -->
+            <section>
+                <h2>2. Purpose</h2>
+                <p>ExtremityVault is a fandom-style encyclopedia for our client's fictional novel. The site will contain lore pages covering characters, settings, arcs, and items, and will also support connecting with the author, purchasing novels, and community discussion through forums.</p>
+                <p>This addresses the client's need for a central hub where readers can explore and engage with the world of the novel — something the client currently lacks.</p>
+
+                <h3>Design Principles</h3>
+                <p><strong>Ease of Navigation:</strong> Highlighted keywords, clear paragraph/image sectioning, and separate tabs for lore, shopping, and forums prevent information overload and give users clear visual cues.</p>
+                <p><strong>Error Prevention:</strong> Passwords and emails are validated against the database before allowing access.</p>
+                <p><strong>Constraints:</strong> Only authorized admins can edit articles. Payment and sensitive input fields enforce valid data entry.</p>
+            </section>
+
+            <!-- 3. Data Description -->
+            <section>
+                <h2>3. Data Description</h2>
+
+                <div class="member" style="margin-bottom: 12px;">
+                    <h3 style="margin-top:0;">Articles</h3>
+                    <p style="margin-bottom:6px;">Stores all wiki/lore pages for the encyclopedia.</p>
+                    <ul>
+                        <li><code>article_id</code> — INT, Primary Key</li>
+                        <li><code>title</code> — VARCHAR</li>
+                        <li><code>content</code> — TEXT</li>
+                        <li><code>category</code> — VARCHAR (e.g. character / setting / item)</li>
+                        <li><code>created_at</code> — DATETIME</li>
+                        <li><code>updated_by</code> — INT, FK → Users</li>
+                    </ul>
+                </div>
+
+                <div class="member" style="margin-bottom: 12px;">
+                    <h3 style="margin-top:0;">Users</h3>
+                    <p style="margin-bottom:6px;">Stores registered fan accounts.</p>
+                    <ul>
+                        <li><code>user_id</code> — INT, Primary Key</li>
+                        <li><code>username</code> — VARCHAR</li>
+                        <li><code>email</code> — VARCHAR</li>
+                        <li><code>password_hash</code> — VARCHAR</li>
+                        <li><code>role</code> — ENUM ('user', 'admin')</li>
+                        <li><code>created_at</code> — DATETIME</li>
+                    </ul>
+                </div>
+
+                <div class="member" style="margin-bottom: 12px;">
+                    <h3 style="margin-top:0;">Bookmarks</h3>
+                    <p style="margin-bottom:6px;">Saves favourite articles per user.</p>
+                    <ul>
+                        <li><code>bookmark_id</code> — INT, Primary Key</li>
+                        <li><code>user_id</code> — INT, FK → Users</li>
+                        <li><code>article_id</code> — INT, FK → Articles</li>
+                        <li><code>saved_at</code> — DATETIME</li>
+                    </ul>
+                </div>
+
+                <div class="member">
+                    <h3 style="margin-top:0;">Comments</h3>
+                    <p style="margin-bottom:6px;">Stores discussion threads on articles.</p>
+                    <ul>
+                        <li><code>comment_id</code> — INT, Primary Key</li>
+                        <li><code>article_id</code> — INT, FK → Articles</li>
+                        <li><code>user_id</code> — INT, FK → Users</li>
+                        <li><code>content</code> — TEXT</li>
+                        <li><code>posted_at</code> — DATETIME</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 4. App Functions -->
+            <section>
+                <h2>4. Functions Performed by the App</h2>
+                <ul>
+                    <li><strong>View a lore article</strong> — Displays title, category, featured image, and full content. <em>SELECT</em> from Articles by ID or category filter.</li>
+                    <li><strong>Live search articles</strong> — As the user types, matching article titles appear in a real-time dropdown with no page reload. Implemented via AJAX <em>SELECT … WHERE title LIKE</em> input.</li>
+                    <li><strong>Create / edit / delete article (admin only)</strong> — Admin dashboard form with title, category, and content fields. Submit → <em>INSERT</em>; save edits → <em>UPDATE</em>; delete → <em>DELETE</em> from Articles.</li>
+                    <li><strong>Autosave draft</strong> — While an admin types, the draft is saved every few seconds. A status indicator shows "Autosaved". Handled via async AJAX <em>UPDATE</em> to Articles.</li>
+                    <li><strong>Register / login</strong> — Registration form INSERTs a new row into Users with a hashed password. Login starts a session that persists across pages.</li>
+                    <li><strong>Submit a comment</strong> — Text box and Post button at the bottom of every article. On submit, the comment appears instantly without a page reload via AJAX <em>INSERT</em> into Comments.</li>
+                    <li><strong>View comments</strong> — All comments for an article are displayed in chronological order on page load via <em>SELECT … WHERE article_id</em> matches.</li>
+                </ul>
+            </section>
+
+            <!-- 5. Team Roles -->
+            <section>
+                <h2>5. Roles of Team Members</h2>
+
+                <div class="team-grid">
+                    <div class="member">
+                        <h3>Ammar Khan — Character Viewer</h3>
+                        <p>Building the main encyclopedia interface where users view articles about characters, settings, and items.</p>
+                        <ul>
+                            <li>Database: fetch article data from the Articles table</li>
+                            <li>Implement live search bar (AJAX, no page reload)</li>
+                            <li>PHP to query the DB, JS for live search, HTML/CSS for reading UI</li>
+                        </ul>
+                    </div>
+
+                    <div class="member">
+                        <h3>Erin Sobers — Editor Manager</h3>
+                        <p>Building the admin dashboard for the client to add, edit, and remove lore articles.</p>
+                        <ul>
+                            <li>Database: INSERT new articles, UPDATE existing text, DELETE rows</li>
+                            <li>Implement async autosave so drafts persist while typing</li>
+                            <li>PHP for secure form handling, JS for autosave logic, dashboard UI</li>
+                        </ul>
+                    </div>
+
+                    <div class="member">
+                        <h3>Barzin Vazifedoost — Auth &amp; Preferences</h3>
+                        <p>Building user accounts, login, and a bookmarks system for saving favourite lore pages.</p>
+                        <ul>
+                            <li>Database: INSERT users, manage Bookmarks (add/remove)</li>
+                            <li>Authentication system, session management, safe password storage</li>
+                            <li>Registration forms and user profile page styling</li>
+                        </ul>
+                    </div>
+
+                    <div class="member">
+                        <h3>Anika Agnihotri — Interaction Manager</h3>
+                        <p>Building the comment section and discussion board at the bottom of each lore article.</p>
+                        <ul>
+                            <li>Database: store comments in Comments table, retrieve by article_id</li>
+                            <li>AJAX comment submission — appears instantly without page refresh</li>
+                            <li>PHP to link comments to users/articles, JS for animations, HTML/CSS for threads</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. Wireframes -->
+            <section>
+                <h2>6. Wireframes</h2>
+
+                <div style="margin-bottom: 20px;">
+                    <h3>Ammar — Article / Character Viewer</h3>
+                    <p>Top nav bar with live search, breadcrumb trail, category filters sidebar (Characters, Settings, Items), and featured lore article panel.</p>
+                    <img src="IMG/wireframe-ammar.png" alt="Wireframe: Ammar – Article/Character Viewer" style="width:100%; border:1px solid var(--border); border-radius:8px; margin-top:8px;">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h3>Anika — Comment Section</h3>
+                    <p>Comment input box and Post button at the bottom of each article, with a threaded comment list showing newest first, user avatars, and timestamps.</p>
+                    <img src="IMG/wireframe-anika.png" alt="Wireframe: Anika – Comment Section" style="width:100%; border:1px solid var(--border); border-radius:8px; margin-top:8px;">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h3>Barzin — Login / Register &amp; User Profile</h3>
+                    <p>Login/Register toggle form, and a profile page displaying bookmarked articles as clickable cards with a remove button, paginated.</p>
+                    <img src="IMG/wireframe-barzin.png" alt="Wireframe: Barzin – Login/Register and User Profile" style="width:100%; border:1px solid var(--border); border-radius:8px; margin-top:8px;">
+                </div>
+
+                <div>
+                    <h3>Erin — Admin Dashboard</h3>
+                    <p>Sidebar navigation for New / Edit / Delete Article, a rich article editor with title, category, and content fields, and an autosave status indicator.</p>
+                    <img src="IMG/wireframe-erin.png" alt="Wireframe: Erin – Admin Dashboard" style="width:100%; border:1px solid var(--border); border-radius:8px; margin-top:8px;">
+                </div>
+            </section>
+
+            <!-- 7. Increments -->
+            <section>
+                <h2>7. Increments</h2>
+
+                <h3>Increment 1 — Target: Lab 12.2</h3>
+                <ul>
+                    <li><strong>Ammar:</strong> Basic article display page with static data or one DB-connected article</li>
+                    <li><strong>Erin:</strong> Admin form that can INSERT a new article into the DB</li>
+                    <li><strong>Barzin:</strong> Registration and login form with session management</li>
+                    <li><strong>Anika:</strong> Comment display pulled from DB for a hardcoded article ID</li>
+                </ul>
+
+                <h3>Increment 2 / Final</h3>
+                <p>Full functionality: live search, autosave, bookmarks, AJAX comment posting, role-based access control, polished UI.</p>
+            </section>
+
+            <!-- 8. Client Feedback -->
+            <section>
+                <h2>8. Client Feedback</h2>
+                <p>The client asked that we prioritize the character/lore viewer as the most reader-facing part of the site, and keep the admin dashboard simple enough that they can manage content independently. No major changes to the plan were needed based on their feedback.</p>
+                <p>On design aesthetic, the client stated: <em>"...whimsical."</em></p>
+            </section>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="wrap">
+            <p>© 2026 Team 48 • Contact: <a href="mailto:team48@example.com">team48@example.com</a></p>
+        </div>
+    </footer>
+    <script src="splash.js" defer></script>
+</body>
+
+</html>

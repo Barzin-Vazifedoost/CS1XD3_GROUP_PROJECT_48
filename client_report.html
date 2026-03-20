@@ -5,8 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Client Report – Extremity Vault</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="splash.css">
 </head>
 <body>
+    <div id="splash-overlay" class="splash-overlay" role="dialog" aria-modal="true" aria-label="Welcome">
+        <div class="splash-content">
+            <h1>Welcome to Team 48</h1>
+            <p>Press Go to enter the site.</p>
+            <button id="splash-go" class="splash-btn">Go</button>
+        </div>
+    </div>
 
     <header>
         <div class="wrap">
@@ -109,5 +117,6 @@
         </section>
     </main>
 
+    <script src="splash.js" defer></script>
 </body>
 </html>

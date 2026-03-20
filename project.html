@@ -6,9 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GROUP 48 - Projects</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="splash.css">
 </head>
 
 <body>
+    <div id="splash-overlay" class="splash-overlay" role="dialog" aria-modal="true" aria-label="Welcome">
+        <div class="splash-content">
+            <h1>Welcome to Team 48</h1>
+            <p>Press Go to enter the site.</p>
+            <button id="splash-go" class="splash-btn">Go</button>
+        </div>
+    </div>
     <header>
         <div class="wrap">
             <h1>Our Projects</h1>
@@ -42,6 +50,7 @@
                 
                 <h3>Project Documentation</h3>
                 <p><a href="client_report.html" class="btn">View Full Client Report →</a></p>
+                <p><a href="development-plan.html" class="btn">View Development Plan →</a></p>
             </section>
         </div>
     </main>
@@ -51,6 +60,7 @@
             <p>© 2026 Team 48• Contact: <a href="mailto:team48@example.com">team48@example.com</a></p>
         </div>
     </footer>
+    <script src="splash.js" defer></script>
 </body>
 
 </html>
